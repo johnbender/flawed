@@ -1,35 +1,24 @@
 describe('jQuery.flawed', function(){
+  before_each(function(){
+    JSpec.defaultContext.error_msg = "foo";
+
+    // set some helper methos, extent default later if default
+    // helpers are required
+    JSpec.defaultContext.expect_reraise = function(body){
+      expect(function(){
+
+        // use a default function or one provided to
+        // execute throw
+        jQuery.flawed(body || function(){
+          throw new TypeError(error_msg);
+        });
+      }).to(throw_error, TypeError, error_msg);
+    };
+  });
+
   describe('error handling', function(){
-    before_each(function(){
-      error_msg = "foo";
-
-      // set some helper methos, extent default later if default
-      // helpers are required
-      JSpec.context = {
-        expect_reraise: function(body){
-          expect(function(){
-
-            // use a default function or one provided to
-            // execute throw
-            jQuery.flawed(body || function(){
-              throw new TypeError(error_msg);
-            });
-          }).to(throw_error, TypeError, error_msg);
-        }
-      };
-    });
-
-    after_each(function(){
-      //reset context for normal use elsewhere
-      JSpec.context = null;
-    });
 
     it('should reraise top level exceptions', function(){
-      expect_reraise();
-    });
-
-    it('should communicate errors to the server', function(){
-      expect(jQuery).to(receive, 'ajax');
       expect_reraise();
     });
 
@@ -46,13 +35,24 @@ describe('jQuery.flawed', function(){
     });
   });
 
+  describe('reporting', function(){
+    it('should post the url', function(){
+      expect(jQuery).to(receive, 'post');
+      //,with_args(',', {
+      //        url: window.location
+      //      });
+
+      expect_reraise();
+    });
+  });
+
   describe('dom activity', function(){
     before_each(function(){
-      dom = jQuery(fixture('divs'));
+      JSpec.defaultContext.dom = jQuery(fixture('divs'));
     });
 
     it('should behave as normal', function(){
-      x = 0;
+      var x = 0;
 
       jQuery.flawed(function(){
         jQuery(document).ready(function(){
