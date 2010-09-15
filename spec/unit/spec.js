@@ -39,7 +39,7 @@ describe('jQuery.flawed', function(){
     it('should post the url', function(){
       jQuery.flawed.post_url = '/foo';
       expect(jQuery).to(receive, 'post').with_args('/foo', {
-        url: 'foo'
+        url: $(location).attr('href')
       });
 
       expect_reraise();
