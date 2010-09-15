@@ -11,7 +11,7 @@ describe('jQuery.flawed', function(){
         // execute throw
         jQuery.flawed(body || function(){
           throw new TypeError(error_msg);
-        });
+        })();
       }).to(throw_error, TypeError, error_msg);
     };
   });
@@ -37,10 +37,10 @@ describe('jQuery.flawed', function(){
 
   describe('reporting', function(){
     it('should post the url', function(){
-      expect(jQuery).to(receive, 'post');
-      //,with_args(',', {
-      //        url: window.location
-      //      });
+      jQuery.flawed.post_url = '/foo';
+      expect(jQuery).to(receive, 'post').with_args('/foo', {
+        url: 'foo'
+      });
 
       expect_reraise();
     });
@@ -58,9 +58,19 @@ describe('jQuery.flawed', function(){
         jQuery(document).ready(function(){
           x = dom.find('.counter').length;
         });
-      });
+      })();
 
       expect(x).to(be, dom.find('.counter').length);
+    });
+  });
+
+  describe('using as scope', function(){
+    it('should forward parameters', function(){
+      jQuery.flawed(function(foo, one){
+        expect(foo).to(be, 'foo');
+        expect(one).to(be, 1);
+        expect(arguments.length).to(be, 2);
+      })('foo', 1);
     });
   });
 });
