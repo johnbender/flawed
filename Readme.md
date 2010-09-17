@@ -26,6 +26,15 @@ Other settings include:
     jQuery.flawed.config.ajax.type // 'POST', 'GET', etc
     jQuery.flawed.config.header    // default: 'x-jquery-flawed-stack'
 
+## Handlers
+
+You can see a simple Rack app with a middleware for handling the reports in the examples directory. If you want to run it issue the following (you'll need ruby and bundler):
+
+    $ bundle install
+    $ ruby examples/server.rb
+
+You can then access the index file at localhost:4567/examples/index.html, and watch the requests at the command line.
+
 ## Hacking
 
     $ gem install jspec
@@ -34,7 +43,7 @@ Other settings include:
 
 ## TODO
 
-1. Provide a Rack middleware for use with (Radar)[http://github.com/mitchellh/radar]
+1. Provide a Rack middleware for use with [Radar](http://github.com/mitchellh/radar)
 2. Example middleware
 
 ## License
