@@ -68,6 +68,19 @@ describe('jQuery.flawed', function(){
 
       expect_reraise();
     });
+
+    it('should return the string send in the stack trace', function(){
+      expect(jQuery).to(receive, 'ajax').with_args(
+        jQuery.extend(jQuery.flawed.config.ajax, {
+          data: {
+            url: jQuery(location).attr('href'),
+            stack: 'TypeError: "foo"'
+          }
+        })
+      );
+
+      expect_reraise();
+    });
   });
 
   describe('dom activity', function(){

@@ -26,6 +26,17 @@ Other settings include:
     jQuery.flawed.config.ajax.type // 'POST', 'GET', etc
     jQuery.flawed.config.header    // default: 'x-jquery-flawed-stack'
 
+## Hacking
+
+    $ gem install jspec
+    $ cd ~/path/to/flawed/
+    $ jspec run --browser firefox
+
+## TODO
+
+1. Provide a Rack middleware for use with (Radar)[http://github.com/mitchellh/radar]
+2. Example middleware
+
 ## License
 
 (The MIT License)
