@@ -1,11 +1,11 @@
 
 # jQuery.flawed.js
 
-Flawed is a very small plugin for reporting client side error reporting.
+Flawed is a very small plugin for reporting client side errors.
 
 ## Why?
 
-No one writes perfect code, and client side developers needs the same error visibility that server side folks have.
+No one writes perfect code, and client side developers needs the same error visibility that server side folks have in spades.
 
 ## Setup
 
@@ -15,7 +15,7 @@ On the client, just use flawed to wrap your js where you would normally use an a
       // insert your flawed javascript here
     })();
 
-Server side, with flawed's default configuration, simply respond to a POST request at the root of your application ( '/' ) for requests with the header 'x-jquery-flawed-stack'.
+Server side, with flawed's default configuration, simply handle POST requests at the root of your applicationa for requests with the header 'x-jquery-flawed-stack'.
 
 Changing the default path is recommended:
 
@@ -44,7 +44,7 @@ You can then access the index file at localhost:4567/examples/index.html, and wa
 ## TODO
 
 1. Provide a Rack middleware for use with [Radar](http://github.com/mitchellh/radar)
-2. Example middleware
+2. Add stacktrace
 
 ## License
 
