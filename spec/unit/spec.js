@@ -36,11 +36,35 @@ describe('jQuery.flawed', function(){
   });
 
   describe('reporting', function(){
-    it('should post the url', function(){
-      jQuery.flawed.post_url = '/foo';
-      expect(jQuery).to(receive, 'post').with_args('/foo', {
-        url: $(location).attr('href')
-      });
+
+    before_each(function(){
+      JSpec.defaultContext.flawed_defaults = jQuery.flawed.config;
+    });
+
+    after_each(function(){
+      jQuery.flawed.config = JSpec.defaultContext.flawed_defaults;
+    });
+
+    it('should post the path set on the flawed object', function(){
+      jQuery.flawed.config.ajax.path = '/foo';
+
+      expect(jQuery).to(receive, 'ajax').with_args(
+        jQuery.extend(jQuery.flawed.config.ajax, {
+          path: '/foo'
+        })
+      );
+
+      expect_reraise();
+    });
+
+    it('should use the header defined on the settings object', function(){
+      jQuery.flawed.config.ajax.type = 'GET';
+
+      expect(jQuery).to(receive, 'ajax').with_args(
+        jQuery.extend(jQuery.flawed.config.ajax, {
+          type: 'GET'
+        })
+      );
 
       expect_reraise();
     });

@@ -1,9 +1,32 @@
 
-# YourLib
+# jQuery.flawed.js
 
-Description
+Flawed is a very small plugin for reporting client side error reporting.
 
-## License 
+## Why?
+
+No one writes perfect code, and client side developers needs the same error visibility that server side folks have.
+
+## Setup
+
+On the client, just use flawed to wrap your js where you would normally use an anonymous function:
+
+    jQuery.flawed(function(){
+      // insert your flawed javascript here
+    })();
+
+Server side, with flawed's default configuration, simply respond to a POST request at the root of your application ( '/' ) for requests with the header 'x-jquery-flawed-stack'.
+
+Changing the default path is recommended:
+
+    jQuery.flawed.config.ajax.path = '/your/path/here' // default '/'
+
+Other settings include:
+
+    jQuery.flawed.config.ajax.type // 'POST', 'GET', etc
+    jQuery.flawed.config.header    // default: 'x-jquery-flawed-stack'
+
+## License
 
 (The MIT License)
 
