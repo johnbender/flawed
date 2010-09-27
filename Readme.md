@@ -1,7 +1,7 @@
 
-# jQuery.flawed.js
+# jquery.flawed.js
 
-Flawed is a very small plugin for reporting client side errors.
+Flawed is a very small jquery plugin for reporting client side errors.
 
 ## Why?
 
@@ -11,20 +11,26 @@ No one writes perfect code, and client side developers needs the same error visi
 
 On the client, just use flawed to wrap your js where you would normally use an anonymous function:
 
-    jQuery.flawed(function(){
+    $.flawed(function(){
       // insert your flawed javascript here
     })();
 
-Server side, with flawed's default configuration, simply handle POST requests at the root of your applicationa for requests with the header 'x-jquery-flawed-stack'.
+Server side, with flawed's default configuration, simply handle POST requests at the root of your application for requests with the header 'x-jquery-flawed-stack'.
 
 Changing the default path is recommended:
 
-    jQuery.flawed.config.ajax.path = '/your/path/here' // default '/'
+    $.flawed.config.ajax.path = '/your/path/here' // default '/'
 
 Other settings include:
 
-    jQuery.flawed.config.ajax.type // 'POST', 'GET', etc
-    jQuery.flawed.config.header    // default: 'x-jquery-flawed-stack'
+    $.flawed.config.ajax.type // 'POST', 'GET', etc
+    $.flawed.config.header    // default: 'x-jquery-flawed-stack'
+
+## javascript-stacktrace
+
+If the `printStackTrace` function is defined on the window object, it will be used to provide cross browser stack trace information. If not, the stack property of the data transmitted to the server will simply be the the error object caught within flawed's anonymous function.
+
+For more information on javascript-stacktrace see the [github page](http://github.com/emwendelin/javascript-stacktrace).
 
 ## Handlers
 
@@ -33,9 +39,9 @@ You can see a simple Rack app with a middleware for handling the reports in the 
     $ bundle install
     $ ruby examples/server.rb
 
-You can then access the index file at localhost:4567/examples/index.html, and watch the requests at the command line.
+You can then access the index file at localhost:4567/examples/index.html, and watch the stack trace information at the command line.
 
-## Hacking
+## Tests
 
     $ cd ~/path/to/flawed/
     $ firefox spec/dom.html
