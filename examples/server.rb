@@ -12,7 +12,11 @@ class Rack::Flawed
 
     if env[@header] && req.post?
       # Log the stacktrack
-      p req.params
+      puts <<-stack
+!! Stack Trace !!
+#{req.params.inspect}
+!! Stack Trace !!
+stack
     end
 
     @app.call(env)

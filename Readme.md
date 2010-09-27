@@ -37,14 +37,12 @@ You can then access the index file at localhost:4567/examples/index.html, and wa
 
 ## Hacking
 
-    $ gem install jspec
     $ cd ~/path/to/flawed/
-    $ jspec run --browser firefox
+    $ firefox spec/dom.html
 
 ## TODO
 
 1. Provide a Rack middleware for use with [Radar](http://github.com/mitchellh/radar)
-2. Add stacktrace
 
 ## License
 

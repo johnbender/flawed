@@ -1,3 +1,3 @@
 jQuery.flawed(function(){
-  throw new TypeError('foo');
+ throw new Error('foo');
 })();
