@@ -1,0 +1,3 @@
+[submodule "javascript-stacktrace"]
+	path = javascript-stacktrace
+	url = http://github.com/emwendelin/javascript-stacktrace.git

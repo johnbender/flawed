@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'logger'
 require 'rack'
 
 class Rack::Flawed
@@ -9,8 +8,11 @@ class Rack::Flawed
   end
 
   def call(env)
-    if env[@header]
-      # Log or report exception here
+    req = Rack::Request.new(env)
+
+    if env[@header] && req.post?
+      # Log the stacktrack
+      p req.params
     end
 
     @app.call(env)

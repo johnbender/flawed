@@ -1,29 +1,30 @@
 describe('jQuery.flawed', function(){
   before_each(function(){
+    JSpec.defaultContext.proxy = {};
     JSpec.defaultContext.error_msg = "foo";
 
     // set some helper methos, extent default later if default
     // helpers are required
-    JSpec.defaultContext.expect_reraise = function(body){
+    JSpec.defaultContext.expect_raise = function(body){
       expect(function(){
 
         // use a default function or one provided to
         // execute throw
         jQuery.flawed(body || function(){
-          throw new TypeError(error_msg);
+          throw JSpec.defaultContext.proxy.error = new Error(error_msg);
         })();
-      }).to(throw_error, TypeError, error_msg);
+      }).to(throw_error, Error, error_msg);
     };
   });
 
   describe('error handling', function(){
 
     it('should reraise top level exceptions', function(){
-      expect_reraise();
+      expect_raise();
     });
 
     it('should reraise exceptions from nested contexts', function(){
-      expect_reraise(function(){
+      expect_raise(function(){
         jQuery(document).ready(function(){
           (function(){
             (function(){
@@ -39,6 +40,9 @@ describe('jQuery.flawed', function(){
 
     before_each(function(){
       JSpec.defaultContext.flawed_defaults = jQuery.flawed.config;
+      jQuery.ajax = function(options){
+        JSpec.defaultContext.proxy = options;
+      };
     });
 
     after_each(function(){
@@ -47,39 +51,42 @@ describe('jQuery.flawed', function(){
 
     it('should post the path set on the flawed object', function(){
       jQuery.flawed.config.ajax.path = '/foo';
-
-      expect(jQuery).to(receive, 'ajax').with_args(
-        jQuery.extend(jQuery.flawed.config.ajax, {
-          path: '/foo'
-        })
-      );
-
-      expect_reraise();
+      expect_raise();
+      expect(proxy.path).to(be, '/foo');
     });
 
     it('should use the header defined on the settings object', function(){
-      jQuery.flawed.config.ajax.type = 'GET';
-
-      expect(jQuery).to(receive, 'ajax').with_args(
-        jQuery.extend(jQuery.flawed.config.ajax, {
-          type: 'GET'
-        })
-      );
-
-      expect_reraise();
+      jQuery.flawed.config.ajax.type = 'POST';
+      expect_raise();
+      expect(proxy.type).to(be, 'POST');
     });
 
-    it('should return the string send in the stack trace', function(){
-      expect(jQuery).to(receive, 'ajax').with_args(
-        jQuery.extend(jQuery.flawed.config.ajax, {
-          data: {
-            url: jQuery(location).attr('href'),
-            stack: 'TypeError: "foo"'
-          }
-        })
-      );
+    describe('data', function(){
+      before_each(function(){
+        expect_raise();
+      });
 
-      expect_reraise();
+      // NOTE test for array stacktrace when javascript-stacktrace is included
+      it('should include the stacktrace as an array with printStackTrace defined', function(){
+        expect(proxy.data.stack).to(be_an_instance_of, Array);
+      });
+
+      it('should include the stack as the error object itself when printStackTrace is not defined', function(){
+        window.printStackTrace = undefined;
+        expect(proxy.data.stack).to(be_an_instance_of, Object);
+      });
+
+      it('should include the url from the current location', function(){
+        expect(proxy.data.url).to(be, $(location).attr('href'));
+      });
+
+      it('should include the type from the error name', function(){
+        expect(proxy.data.type).to(be, new Error('foo').name);
+      });
+
+      it('should include the message from the error', function(){
+        expect(proxy.data.message).to(be, new Error('foo').message);
+      });
     });
   });
 
