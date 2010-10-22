@@ -19,11 +19,11 @@ Server side, with flawed's default configuration, simply handle POST requests at
 
 Changing the default path is recommended:
 
-    $.flawed.config.ajax.path = '/your/path/here' // default '/'
+    $.flawed.config.request.path = '/your/path/here' // default '/'
 
 Other settings include:
 
-    $.flawed.config.ajax.type // 'POST', 'GET', etc
+    $.flawed.config.request.type // 'POST', 'GET', etc
     $.flawed.config.header    // default: 'x-jquery-flawed-stack'
 
 ## javascript-stacktrace

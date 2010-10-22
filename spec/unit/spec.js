@@ -50,13 +50,13 @@ describe('jQuery.flawed', function(){
     });
 
     it('should post the path set on the flawed object', function(){
-      jQuery.flawed.config.ajax.path = '/foo';
+      jQuery.flawed.config.request.path = '/foo';
       expect_raise();
       expect(proxy.path).to(be, '/foo');
     });
 
     it('should use the header defined on the settings object', function(){
-      jQuery.flawed.config.ajax.type = 'POST';
+      jQuery.flawed.config.request.type = 'POST';
       expect_raise();
       expect(proxy.type).to(be, 'POST');
     });
