@@ -55,10 +55,16 @@ describe('jQuery.flawed', function(){
       expect(proxy.path).to(be, '/foo');
     });
 
-    it('should use the header defined on the settings object', function(){
+    it('should use the type defined on the settings object', function(){
       jQuery.flawed.config.request.type = 'POST';
       expect_raise();
       expect(proxy.type).to(be, 'POST');
+    });
+
+    it('should use the header defined on the settings object', function(){
+      jQuery.flawed.config.request.header = 'foo';
+      expect_raise();
+      expect(proxy.header).to(be, 'foo');
     });
 
     describe('data', function(){
